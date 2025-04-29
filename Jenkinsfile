@@ -21,6 +21,7 @@ pipeline{
         }
         stage('uploading image to AWS ECR'){
             steps{
+                sh "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/c5d4m2m5"
                 sh "docker build -t nodejs/sserver ."
                 sh "docker tag nodejs/sserver:latest public.ecr.aws/c5d4m2m5/nodejs/sserver:latest"
                 sh "docker push public.ecr.aws/c5d4m2m5/nodejs/sserver:latest"
