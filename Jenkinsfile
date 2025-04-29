@@ -9,14 +9,14 @@ pipeline{
         stage('docker build'){
             steps{
                 echo "stating docker build"
-                bash docker build -t node-test-01:latest .
-                bash docker images
+                sh docker build -t node-test-01:latest .
+                sh docker images
             }
         }
         stage('docker run'){
             steps{
                 echo "time to run docker image"
-                bash docker run -d -p 3000:3000 node-test-01:latest
+                sh docker run -d -p 3000:3000 node-test-01:latest
                 echo "done"
             }
         }
