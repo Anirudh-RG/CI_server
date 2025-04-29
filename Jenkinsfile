@@ -16,7 +16,9 @@ pipeline{
         stage('docker run'){
             steps{
                 echo "time to run docker image"
-                sh "docker run -d -p 3000:3000 node-test-01:latest"
+                sh "docker run -name nodetester -d -p 3000:3000 node-test-01:latest"
+                sh "sleep 30"
+                sh "docker stop nodetester"
                 echo "done"
             }
         }
