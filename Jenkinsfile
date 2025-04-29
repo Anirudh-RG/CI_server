@@ -1,33 +1,36 @@
-// // when a new push happens, 
-// 1. trigger a docker build
-// 2. push image to aws ecr
-// 3. finally deploy as a task.
-
-pipeline{
+pipeline {
     agent any
-    stages{
-        stage('docker build'){
-            steps{
-                echo "stating docker build"
+    
+    stages {
+        stage('Docker Build') {
+            steps {
+                echo "Starting docker build"
                 sh "docker build -t node-test-01:latest ."
                 sh "docker images"
             }
         }
-        stage('docker run'){
-            steps{
-                echo "time to run docker image"
-                echo "done"
+        stage('Upload to AWS ECR') {
+            environment {
+                AWS_CREDENTIALS = credentials('aws-creds')
+            }
+            steps {
+                // Login to ECR using credentials stored in Jenkins
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', 
+                                  credentialsId: 'aws-ecr-credentials',
+                                  accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
+                                  secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                    sh "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/c5d4m2m5"
+                    sh "docker tag node-test-01:latest public.ecr.aws/c5d4m2m5/nodejs/sserver:latest"
+                    sh "docker push public.ecr.aws/c5d4m2m5/nodejs/sserver:latest"
+                }
+                echo "Done"
             }
         }
-        stage('uploading image to AWS ECR'){
-            steps{
-                sh "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/c5d4m2m5"
-                sh "docker build -t nodejs/sserver ."
-                sh "docker tag nodejs/sserver:latest public.ecr.aws/c5d4m2m5/nodejs/sserver:latest"
-                sh "docker push public.ecr.aws/c5d4m2m5/nodejs/sserver:latest"
-                echo " done"
+        stage('Docker Run') {
+            steps {
+                echo "Time to run docker image"
+                echo "Done"
             }
         }
     }
-
 }
