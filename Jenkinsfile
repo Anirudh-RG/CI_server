@@ -16,10 +16,15 @@ pipeline{
         stage('docker run'){
             steps{
                 echo "time to run docker image"
-                sh "docker run --name=nodetester -d -p 3000:3000 node-test-01:latest"
-                sh "sleep 30"
-                sh "docker stop nodetester"
                 echo "done"
+            }
+        }
+        stage('uploading image to AWS ECR'){
+            steps{
+                sh "docker build -t nodejs/sserver ."
+                sh "docker tag nodejs/sserver:latest public.ecr.aws/c5d4m2m5/nodejs/sserver:latest"
+                sh "docker push public.ecr.aws/c5d4m2m5/nodejs/sserver:latest"
+                echo " done"
             }
         }
     }
