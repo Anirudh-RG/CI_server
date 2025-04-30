@@ -4,8 +4,8 @@ pipeline{
         stage('Deploy as a task'){
             steps{
                 echo "tsak deploy very soon"
-                sh "chmod +x create_service.sh"
-                sh "./create_service.sh"
+                sh "chmod +x ./create_service.sh"
+                sh ./create_service.sh
                 echo "are we done"
                 echo "we are so cooked"
             }
