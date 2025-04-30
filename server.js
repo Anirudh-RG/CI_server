@@ -12,6 +12,11 @@ app.get('/health',(req,res)=>{
     res.send("OK");
 })
 
+app.get('/user',(req,res)=>{
+    res.send("User page");
+    res.status(200);
+})
+
 app.listen(PORT,()=>{
     console.log(`listens on ${PORT}`)
 })
