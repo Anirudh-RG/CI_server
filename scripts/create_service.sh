@@ -33,6 +33,7 @@ TASK_DEF_ARN=$(aws ecs register-task-definition --cli-input-json file://task_def
 # Then create the service using the task definition ARN
 aws ecs create-service \
   --cluster killshot \
+  -- region ap-south-1 \
   --service-name ci_node_app \
   --task-definition "$TASK_DEF_ARN" \
   --launch-type EC2 \
