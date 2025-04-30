@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 # Create the task definition JSON inline
 cat > task_def.json << EOF
