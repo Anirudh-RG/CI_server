@@ -17,6 +17,12 @@ app.get('/user',(req,res)=>{
     res.status(200);
 })
 
+app.get('/user/:id',(req,res)=>{
+    const id = req.params.id;
+    res.send(`User page with id ${id}`);
+    res.status(200);
+})
+
 app.listen(PORT,()=>{
     console.log(`listens on ${PORT}`)
 })
