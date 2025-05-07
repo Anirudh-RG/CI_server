@@ -23,6 +23,10 @@ app.get('/user/:id',(req,res)=>{
     res.status(200);
 })
 
+app.get('/fuck',(req,res)=>{
+    res.send('/fucked')
+})
+
 app.listen(PORT,()=>{
     console.log(`listens on ${PORT}`)
 })
